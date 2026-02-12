@@ -1,0 +1,681 @@
+/* ═══════════════════════════════════════════════
+   REVENANT — Stealth Messenger Overlay Styles
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --bg-glass: rgba(12, 12, 18, 0.75);
+  --bg-glass-strong: rgba(8, 8, 14, 0.88);
+  --border-glass: rgba(255, 255, 255, 0.06);
+  --border-glow: rgba(255, 255, 255, 0.1);
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.45);
+  --text-muted: rgba(255, 255, 255, 0.25);
+  --accent-1: #a78bfa;
+  --accent-2: #6366f1;
+  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.08);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font-sans);
+  user-select: none;
+  -webkit-app-region: no-drag;
+}
+
+
+/* ═══════════════════════════════════════════════
+   MESSAGE CONTAINER
+   ═══════════════════════════════════════════════ */
+
+#message-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+  z-index: 100;
+  max-width: 420px;
+}
+
+/* Position variants */
+#message-container.bottom-right {
+  bottom: 80px;
+  right: 24px;
+  align-items: flex-end;
+}
+
+#message-container.bottom-left {
+  bottom: 80px;
+  left: 24px;
+  align-items: flex-start;
+}
+
+#message-container.top-right {
+  top: 24px;
+  right: 24px;
+  align-items: flex-end;
+}
+
+#message-container.top-left {
+  top: 24px;
+  left: 24px;
+  align-items: flex-start;
+}
+
+
+/* ═══════════════════════════════════════════════
+   MESSAGE TOAST
+   ═══════════════════════════════════════════════ */
+
+.message-toast {
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  max-width: 420px;
+  min-width: 180px;
+  box-shadow:
+    var(--shadow-glow),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: messageSlideIn 0.4s var(--ease-out-expo) forwards;
+  opacity: 0;
+  transform: translateX(30px) scale(0.95);
+  position: relative;
+  overflow: hidden;
+}
+
+.message-toast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+}
+
+.message-toast.own-message {
+  border-left: 2px solid rgba(167, 139, 250, 0.3);
+}
+
+.message-toast.fade-out {
+  animation: messageFadeOut 0.8s ease-out forwards;
+}
+
+.message-sender {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  margin-bottom: 3px;
+  background: linear-gradient(135deg, var(--sender-color-1, var(--accent-1)), var(--sender-color-2, var(--accent-2)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+.message-text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  word-wrap: break-word;
+}
+
+.message-text .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: var(--accent-1);
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.6s steps(1) infinite;
+  opacity: 0.8;
+}
+
+
+/* ═══════════════════════════════════════════════
+   SYSTEM MESSAGE
+   ═══════════════════════════════════════════════ */
+
+.system-message {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 4px 12px;
+  backdrop-filter: none;
+}
+
+.system-message .message-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+
+/* ═══════════════════════════════════════════════
+   TYPING INDICATOR
+   ═══════════════════════════════════════════════ */
+
+.typing-indicator {
+  position: fixed;
+  z-index: 99;
+  padding: 6px 14px;
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-out-expo);
+}
+
+.typing-indicator.bottom-right {
+  bottom: 62px;
+  right: 24px;
+}
+
+.typing-indicator.bottom-left {
+  bottom: 62px;
+  left: 24px;
+}
+
+.typing-indicator.top-right {
+  top: 56px;
+  right: 24px;
+}
+
+.typing-indicator.top-left {
+  top: 56px;
+  left: 24px;
+}
+
+.typing-indicator.is-hidden {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+.typing-name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+}
+
+.typing-dots {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.typing-dots span {
+  animation: typingDot 1.4s infinite;
+  opacity: 0.2;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+
+/* ═══════════════════════════════════════════════
+   INPUT BAR
+   ═══════════════════════════════════════════════ */
+
+.input-bar {
+  position: fixed;
+  z-index: 200;
+  width: 440px;
+  transition: all 0.35s var(--ease-out-expo);
+  pointer-events: auto;
+}
+
+.input-bar.bottom-right {
+  bottom: 20px;
+  right: 24px;
+}
+
+.input-bar.bottom-left {
+  bottom: 20px;
+  left: 24px;
+}
+
+.input-bar.top-right {
+  top: 20px;
+  right: 24px;
+}
+
+.input-bar.top-left {
+  top: 20px;
+  left: 24px;
+}
+
+.input-bar.is-hidden {
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  pointer-events: none;
+  display: block !important;
+}
+
+.input-bar.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.input-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--radius) + 1px);
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-1));
+  background-size: 200% 200%;
+  animation: glowShift 4s ease infinite;
+  opacity: 0.25;
+  z-index: -1;
+  filter: blur(1px);
+}
+
+.input-inner {
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(30px) saturate(1.6);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  box-shadow:
+    var(--shadow-glow),
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.input-brand {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.input-peers {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+}
+
+.input-peers::before {
+  content: '●';
+  color: #34d399;
+  margin-right: 4px;
+  font-size: 7px;
+  animation: peerPulse 2s ease infinite;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-username {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.input-separator {
+  color: var(--text-muted);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+#message-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  caret-color: var(--accent-1);
+}
+
+#message-input::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.input-hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes messageFadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(15px) scale(0.98);
+  }
+}
+
+@keyframes cursorBlink {
+
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes typingDot {
+
+  0%,
+  60%,
+  100% {
+    opacity: 0.2;
+  }
+
+  30% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes glowShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes peerPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* Left-side slide variants */
+.message-toast.slide-left {
+  transform: translateX(-30px) scale(0.95);
+}
+
+@keyframes messageSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes messageFadeOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-15px) scale(0.98);
+  }
+}
+
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR (for any overflow)
+   ═══════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
+/* ═══════════════════════════════════════════════
+   FILE TOAST
+   ═══════════════════════════════════════════════ */
+
+.file-toast {
+  pointer-events: auto !important;
+  cursor: default;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.file-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(167, 139, 250, 0.3));
+}
+
+.file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.file-progress-wrap {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+  transition: opacity 0.5s ease, height 0.5s ease;
+}
+
+.file-progress-wrap.hidden {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+}
+
+.file-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  border-radius: 2px;
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+}
+
+.file-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  transition: opacity 0.3s ease;
+}
+
+.file-actions.hidden {
+  display: none;
+}
+
+.file-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+
+.file-action-btn:hover {
+  background: rgba(167, 139, 250, 0.15);
+  border-color: rgba(167, 139, 250, 0.3);
+  color: var(--text-primary);
+}
+
+
+/* ═══════════════════════════════════════════════
+   FILE BUTTON (INPUT BAR)
+   ═══════════════════════════════════════════════ */
+
+.input-file-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 3px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.input-file-btn:hover {
+  color: var(--accent-1);
+  border-color: rgba(167, 139, 250, 0.3);
+  background: rgba(167, 139, 250, 0.1);
+}
+
+.input-bar.drag-over .input-inner {
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow:
+    0 0 20px rgba(167, 139, 250, 0.15),
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.input-bar.drag-over .input-glow {
+  opacity: 0.5;
+}
+
+
+/* ═══════════════════════════════════════════════
+   UTILITY
+   ═══════════════════════════════════════════════ */
+
+.is-hidden {
+  display: none !important;
+}

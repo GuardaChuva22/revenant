@@ -1,0 +1,21 @@
+{
+  "name": "revenant",
+  "version": "1.0.0",
+  "description": "Stealth LAN Messenger — Encrypted ephemeral chat overlay",
+  "main": "src/main/index.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win nsis",
+    "clean": "rimraf dist",
+    "dev": "electron . --dev"
+  },
+  "author": "Revenant",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "dependencies": {
+    "uuid": "^11.0.0"
+  }
+}

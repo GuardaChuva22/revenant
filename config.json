@@ -1,0 +1,15 @@
+{
+    "username": "Anonymous",
+    "sessionPassword": "default",
+    "hotkey": "Ctrl+Shift+R",
+    "port": 47777,
+    "messageDisplayDuration": 5000,
+    "fileDisplayDuration": 15000,
+    "maxVisibleMessages": 5,
+    "position": "bottom-right",
+    "opacity": 0.9,
+    "soundEnabled": true,
+    "soundVolume": 0.5,
+    "hideTrayIcon": false,
+    "autoStart": false
+}
